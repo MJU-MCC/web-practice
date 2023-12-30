@@ -1,4 +1,4 @@
-package com.example.practice;
+package com.example.mcc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
