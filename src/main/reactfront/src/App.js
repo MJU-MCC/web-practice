@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
-import React, {useState, useEffect} from "react";
+import React from 'react';
+import Nav from './Nav';
+import Home from './Home';
+import Sign from './Sign';
+import { BrowserRouter,Route,Routes} from 'react-router-dom';
 
-function App() {
-  const [msg, setMsg] = useState([]);
-  useEffect(() => {
-    fetch("/api/hello")
-        .then((res) => {return res.json();})
-        .then((data) => {setMsg(data);})
-  }, []);
+const App = () => {
   return (
-      <div className="App">
-        <header className="App-header">
-          <ul>
-            {msg.map((content, idx) => <li key={`${idx} - ${content}`}>{content}</li>)}
-          </ul>
-        </header>
-      </div>
+    <BrowserRouter>
+    <div>
+      <Nav/>
+      <Routes>
+        <Route exact path='/' element={<Home/>}/>
+        <Route path='/sign' element={<Sign/>}/>
+      </Routes>
+    </div>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
