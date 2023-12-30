@@ -2,7 +2,7 @@ version: '3'
 
 services:
   react-app:
-    image: reactfront:latest
+    image: rlagustjd/reactfront:latest
     ports:
       - "3000:3000"
     depends_on:
@@ -10,14 +10,14 @@ services:
       - mysql-db
 
   spring-boot-app:
-    image: springboot:latest
+    image: rlagustjd/springboot:latest
     ports:
       - "8080:8080"
     depends_on:
       - mysql-db
 
   mysql-db:
-    image: mysql:latest
+    image: rlagustjd/mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: mcc123
       MYSQL_DATABASE: mcc
