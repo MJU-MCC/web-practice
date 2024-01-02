@@ -48,7 +48,7 @@ public class MccController {
         return success(LOGIN_SUCCESS,loginUser);
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public Response logout(HttpServletRequest request){
 
         HttpSession session = request.getSession(false);
