@@ -9,9 +9,12 @@ const Nav = () => {
             <img id='logo' src={Logo} alt='logo'></img>
             </Link>
             <p id='about'>About</p>
-            <p id='recruitment'>Recruitment</p>
+            <p id='study'>Study</p>
             <p id='project'>Project</p>
-            <p id='apply'>Apply</p>
+            <p id='vote'>Vote</p>
+            <Link to='/mypage'>
+                <p id='mypage'>My Page</p>
+            </Link>
             <Link to='/sign'>
                 <p id='login'>Login</p>
             </Link>

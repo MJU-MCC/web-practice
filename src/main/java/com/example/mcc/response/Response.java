@@ -1,10 +1,10 @@
 package com.example.mcc.response;
 
-
 import com.example.mcc.Dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import com.example.mcc.Dto.User;
 import org.springframework.http.HttpStatus;
 
 import java.util.Optional;
