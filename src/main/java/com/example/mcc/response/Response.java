@@ -17,7 +17,9 @@ public class Response {
     private int code;
     private String message;
     private Optional<UserDto> user;
-
+    public static Response success(String message ){
+        return new Response(true , HttpStatus.OK.value(),message,null);
+    }
     public static Response success(String message , Optional<UserDto> user){
         return new Response(true , HttpStatus.OK.value(),message,user);
     }
