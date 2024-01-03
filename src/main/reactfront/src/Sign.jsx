@@ -47,7 +47,7 @@ const LoginFunc=(e)=>{
                 setMsg("")
                 navigate('/mypage')
             }
-            
+
             if(res.data.code===400){
                 setMsg("회원 정보를 찾을 수 없습니다.")
             }
@@ -64,6 +64,12 @@ useEffect(()=>{
         },1500)
     }
 },[msg])
+
+useEffect(()=>{
+    if(user.isLogin){
+        navigate('/mypage')
+    }
+})
 
 let user=useSelector((state)=>{return state.user})
 
