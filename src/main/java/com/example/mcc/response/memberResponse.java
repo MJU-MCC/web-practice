@@ -11,19 +11,19 @@ import java.util.Optional;
 @JsonPropertyOrder({"isSuccess" , "code" , "message","Member"})
 @AllArgsConstructor
 @Getter
-public class Response {
+public class memberResponse {
     private boolean isSuccess;
     private int code;
     private String message;
     private Optional<memberDto> user;
-    public static Response success(String message ){
-        return new Response(true , HttpStatus.OK.value(),message,null);
+    public static memberResponse success(String message ){
+        return new memberResponse(true , HttpStatus.OK.value(),message,null);
     }
-    public static Response success(String message , Optional<memberDto> user){
-        return new Response(true , HttpStatus.OK.value(),message,user);
+    public static memberResponse success(String message , Optional<memberDto> user){
+        return new memberResponse(true , HttpStatus.OK.value(),message,user);
     }
-    public static Response fail(String message){
-        return new Response(false , HttpStatus.BAD_REQUEST.value() ,message,null);
+    public static memberResponse fail(String message){
+        return new memberResponse(false , HttpStatus.BAD_REQUEST.value() ,message,null);
     }
 
 }

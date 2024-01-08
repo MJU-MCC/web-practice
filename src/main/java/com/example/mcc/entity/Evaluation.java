@@ -1,0 +1,23 @@
+package com.example.mcc.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Evaluation {
+    //한개의 평가항목이 여러 투표글에 들어갈수 있다. 한개의 투표글은 여러개의 평가항목을 가질수있다.
+
+    @Id @GeneratedValue
+    private Long evaluationId;
+
+    private String evaluationName;
+    private String evaluationDescript;
+
+    @ManyToOne
+    @JoinColumn(name = "vote_id")
+    private Vote vote;
+}
