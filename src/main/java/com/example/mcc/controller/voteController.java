@@ -35,12 +35,15 @@ public class voteController {
         return success(VOTE_SUCCESS,result);
     }
 
-    @GetMapping("/vote/form")
-    public voteResponse voteform(){
-        return null;
+    // 투표 글 저장한 평가목록 , 팀 데이터 불러오기
+    @GetMapping("/vote/form/{number}")
+    public Vote voteform(@PathVariable Long number){
+        log.info("매개변수로 받은 number = {}", number);
+        Vote findVote = mccVoteService.searchVote(number);
+        return findVote;
     }
 
-
+    // 투표 글 작성하기
     @PostMapping("/vote/regist")
     public voteResponse voteregist(@RequestBody VoteDto voteDto){
 

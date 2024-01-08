@@ -15,6 +15,7 @@ public class Team {
     private Long teamId;
 
     private String teamName;
+    int voteScore;
 
     @ManyToOne
     @JoinColumn(name = "vote_id")

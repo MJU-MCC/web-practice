@@ -20,7 +20,6 @@ public class Vote {
 
     private LocalTime voteDate;
     private String voteName;
-    private int voteScore;
 
     @OneToMany(mappedBy = "vote")
     private List<memberVote> memberVoteList = new ArrayList<>();
