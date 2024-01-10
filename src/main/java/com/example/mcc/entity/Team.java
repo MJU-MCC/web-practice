@@ -18,6 +18,6 @@ public class Team {
     int voteScore;
 
     @ManyToOne
-    @JoinColumn(name = "vote_id")
-    private Vote vote;
+    @JoinColumn(name = "evaluation_id")
+    private Evaluation evaluation;
 }

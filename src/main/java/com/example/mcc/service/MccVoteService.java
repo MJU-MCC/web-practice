@@ -5,6 +5,8 @@ import com.example.mcc.repository.VoteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.example.mcc.response.Message.VOTE_SUCCESS_SAVE;
@@ -19,9 +21,16 @@ public class MccVoteService {
         this.voteRepository = voteRepository;
     }
 
-    public List<Vote> showList() {
+    public List<String> showList() {
         List<Vote> votes = voteRepository.findAll();
-        return votes;
+
+        ArrayList<String> list = new ArrayList<>();
+        Iterator<Vote> voteList = votes.iterator();
+        while(voteList.hasNext()){
+            String title = voteList.next().getVoteName();
+            list.add(title);
+        }
+        return list;
     }
 
     public String saveVote(Vote vote) {

@@ -3,6 +3,9 @@ package com.example.mcc.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -20,4 +23,7 @@ public class Evaluation {
     @ManyToOne
     @JoinColumn(name = "vote_id")
     private Vote vote;
+
+    @OneToMany(mappedBy = "evaluation")
+    private List<Team> teamList= new ArrayList<>();
 }

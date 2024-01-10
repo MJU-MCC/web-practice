@@ -9,11 +9,16 @@ import com.example.mcc.service.MccVoteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Array;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.mcc.response.Message.VOTE_SUCCESS;
+import static com.example.mcc.response.Message.VOTE_SUCCESS_SCORE_SAVE;
 import static com.example.mcc.response.voteResponse.success;
 
 @RestController
@@ -27,12 +32,49 @@ public class voteController {
         this.mccVoteService = mccVoteService;
     }
 
+    // 투표 글 작성하기
+    @PostMapping("/vote/regist")
+    public voteResponse voteregist(@RequestBody VoteDto voteDto){
+
+        String title = voteDto.getVote().getVoteName();
+        List<Evaluation> inputEvals = voteDto.getEvaluation();
+        List<Team> inputTeams = voteDto.getTeam();
+
+        //투표 제목 등록
+        Vote vote = new Vote();
+        vote.setVoteName(title);
+        vote.setVoteDate(LocalDate.now());
+
+        ArrayList<Evaluation> evals = new ArrayList<>();
+        ArrayList<Team> teams = new ArrayList<>();
+        for(Team ts : inputTeams){
+            Team team = new Team();
+            team.setTeamName(ts.getTeamName());
+
+            teams.add(team);
+        }
+        //투표 항목 등록
+        for(Evaluation evaluations :inputEvals){
+
+            Evaluation evaluation = new Evaluation();
+            evaluation.setEvaluationName(evaluations.getEvaluationName());
+            evaluation.setTeamList(teams);
+
+            evals.add(evaluation);
+        }
+        vote.setEvaluationList(evals);
+
+        String str = mccVoteService.saveVote(vote);
+
+        return success(str);
+    }
+
     //투표 목록 불러오기 API
     @GetMapping("/vote/list")
     public voteResponse votelist(){
-        List<Vote> result = mccVoteService.showList();
+        List<String> titleList = mccVoteService.showList();
 
-        return success(VOTE_SUCCESS,result);
+        return success(VOTE_SUCCESS,titleList);
     }
 
     // 투표 글 저장한 평가목록 , 팀 데이터 불러오기
@@ -43,47 +85,14 @@ public class voteController {
         return findVote;
     }
 
-    // 투표 글 작성하기
-    @PostMapping("/vote/regist")
-    public voteResponse voteregist(@RequestBody VoteDto voteDto){
-
-        String title = voteDto.getVoteName();
-        List<Evaluation> evaluationList = voteDto.getEvaluation();
-        List<Team> teamList = voteDto.getTeam();
-
-        //투표 제목 등록
-        Vote vote = new Vote();
-        vote.setVoteName(title);
-
-        ArrayList<Evaluation> evals = new ArrayList<>();
-        ArrayList<Team> teams = new ArrayList<>();
-        //투표 항목 등록
-        for(Evaluation evaluations :evaluationList){
-            Evaluation evaluation = new Evaluation();
-            evaluation.setEvaluationName(evaluations.getEvaluationName());
-
-            evals.add(evaluation);
-        }
-        vote.setEvaluationList(evals);
-
-        //투표 팀 등록
-        for(Team ts : teamList){
-            Team team = new Team();
-            team.setTeamName(ts.getTeamName());
-
-            teams.add(team);
-        }
-        vote.setTeamList(teams);
-
-
-        String str = mccVoteService.saveVote(vote);
-
-
-        return success(str);
-    }
     @PostMapping("/vote/save")
-    public voteResponse votesave(){
-        return null;
+    public voteResponse votesave(@RequestBody VoteDto voteBoard){
+
+
+
+
+
+        return success(VOTE_SUCCESS_SCORE_SAVE);
     }
     @GetMapping("/vote/result")
     public voteResponse voteresult(){

@@ -14,5 +14,7 @@ public abstract class Message {
     public final static String VOTE_FAIL = "투표목록 불러오기 실패하였습니다.";
     public final static String VOTE_SUCCESS_SAVE = "투표 저장을 성공하였습니다.";
     public final static String VOTE_FAIL_SAVE = "투표 저장을 실패하였습니다.";
+    public final static String VOTE_SUCCESS_SCORE_SAVE = "투표 점수 저장을 성공하였습니다.";
+    public final static String VOTE_FAIL_SCORE_SAVE = "투표 점수 저장을 실패하였습니다.";
 
 }

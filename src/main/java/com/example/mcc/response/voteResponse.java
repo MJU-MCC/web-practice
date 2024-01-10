@@ -15,13 +15,13 @@ public class voteResponse {
     private boolean isSuccess;
     private int code;
     private String message;
-    private List<Vote> votes;
+    private List<String> votes;
 
     public static voteResponse success(String message ){
         return new voteResponse(true , HttpStatus.OK.value(),message,null);
     }
 
-    public static voteResponse success(String message , List<Vote> votes){
+    public static voteResponse success(String message , List<String> votes){
         return new voteResponse(true , HttpStatus.OK.value(),message,votes);
     }
 }

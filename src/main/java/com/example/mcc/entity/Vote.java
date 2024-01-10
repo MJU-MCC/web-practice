@@ -3,7 +3,7 @@ package com.example.mcc.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,15 +18,11 @@ public class Vote {
     @Id @GeneratedValue
     private Long voteId;
 
-    private LocalTime voteDate;
+    private LocalDate voteDate;
     private String voteName;
 
     @OneToMany(mappedBy = "vote")
     private List<memberVote> memberVoteList = new ArrayList<>();
-
-
-    @OneToMany(mappedBy = "vote")
-    private List<Team> teamList = new ArrayList<>();
 
     @OneToMany(mappedBy = "vote")
     private List<Evaluation> evaluationList = new ArrayList<>();
