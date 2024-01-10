@@ -18,7 +18,6 @@ public class Evaluation {
     private Long evaluationId;
 
     private String evaluationName;
-    private String evaluationDescript;
 
     @ManyToOne
     @JoinColumn(name = "vote_id")

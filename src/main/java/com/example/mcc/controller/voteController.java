@@ -1,6 +1,7 @@
 package com.example.mcc.controller;
 
 import com.example.mcc.Dto.VoteDto;
+import com.example.mcc.Dto.voteForm;
 import com.example.mcc.entity.Evaluation;
 import com.example.mcc.entity.Team;
 import com.example.mcc.entity.Vote;
@@ -79,10 +80,10 @@ public class voteController {
 
     // 투표 글 저장한 평가목록 , 팀 데이터 불러오기
     @GetMapping("/vote/form/{number}")
-    public Vote voteform(@PathVariable Long number){
+    public voteForm voteform(@PathVariable Long number){
         log.info("매개변수로 받은 number = {}", number);
-        Vote findVote = mccVoteService.searchVote(number);
-        return findVote;
+        voteForm voteForm = mccVoteService.searchVote(number);
+        return voteForm;
     }
 
     @PostMapping("/vote/save")
