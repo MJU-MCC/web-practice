@@ -1,8 +1,7 @@
 package com.example.mcc.controller;
 
 import com.example.mcc.Dto.memberDto;
-import com.example.mcc.response.Response;
-import com.example.mcc.service.MccLoginService;
+import com.example.mcc.response.memberResponse;
 import com.example.mcc.service.MccSignService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.example.mcc.response.Message.SIGN_FAIL;
 import static com.example.mcc.response.Message.SIGN_SUCCESS;
-import static com.example.mcc.response.Response.fail;
-import static com.example.mcc.response.Response.success;
+import static com.example.mcc.response.memberResponse.fail;
+import static com.example.mcc.response.memberResponse.success;
 
 @RestController
 @RequestMapping("/mcc")
@@ -28,7 +27,7 @@ public class signController {
     }
 
     @PostMapping("/sign")
-    public Response sign(@RequestBody  memberDto member){
+    public memberResponse sign(@RequestBody  memberDto member){
         log.info("sign 컨트롤러 호출");
         String number = member.getMemberNumber();
         String password = member.getMemberPassword();

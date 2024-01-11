@@ -5,7 +5,6 @@ import com.example.mcc.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static com.example.mcc.response.Message.SIGN_FAIL;
 import static com.example.mcc.response.Message.SIGN_SUCCESS;
 
 @Service

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -13,7 +14,7 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class memberVote {
+public class participant {
 
     @Id
     @GeneratedValue
@@ -27,5 +28,9 @@ public class memberVote {
     @JoinColumn(name = "vote_id")
     private Vote vote;
 
-    private LocalTime createdAt;
+    //투표한 날
+    private LocalDate createdAt;
+    //투표 하였는지
+    private Boolean isCheck;
+
 }

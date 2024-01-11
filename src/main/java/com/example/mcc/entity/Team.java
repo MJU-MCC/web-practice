@@ -14,10 +14,13 @@ public class Team {
     @Id @GeneratedValue
     private Long teamId;
 
+    //팀 이름
     private String teamName;
+
+    //팀 점수
     int voteScore;
 
     @ManyToOne
-    @JoinColumn(name = "evaluation_id")
-    private Evaluation evaluation;
+    @JoinColumn(name = "vote_id")
+    private Vote vote;
 }

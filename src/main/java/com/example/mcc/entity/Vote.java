@@ -1,5 +1,6 @@
 package com.example.mcc.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,18 +14,25 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Vote {
-    //멤버와 투표는 N:M관계 한개의 투표에 여러명의 멤버 , 한명의 멤버는 여러 두표 가능
-
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long voteId;
 
-    private LocalDate voteDate;
+    //투표 제목
     private String voteName;
 
-    @OneToMany(mappedBy = "vote")
-    private List<memberVote> memberVoteList = new ArrayList<>();
+    //평가 항목
+    @ElementCollection
+    private List<String> Evaluation;
+
+    //투표 날짜
+    private LocalDate voteDate;
+
 
     @OneToMany(mappedBy = "vote")
-    private List<Evaluation> evaluationList = new ArrayList<>();
+    private List<participant> participantList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "vote")
+    @JsonIgnore
+    private List<Team> teamList = new ArrayList<>();
 }
