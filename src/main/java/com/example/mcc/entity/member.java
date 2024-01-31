@@ -1,12 +1,10 @@
 package com.example.mcc.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +20,9 @@ public class member {
     private String memberNumber;
     //비밀번호
     private String memberPassword;
+
+    //권한
+    private String role;
 
 
     @OneToMany(mappedBy = "member")

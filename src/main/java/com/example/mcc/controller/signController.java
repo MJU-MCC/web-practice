@@ -1,9 +1,10 @@
 package com.example.mcc.controller;
 
 import com.example.mcc.Dto.memberDto;
-import com.example.mcc.response.memberResponse;
+import com.example.mcc.response.SignResponse;
 import com.example.mcc.service.MccSignService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,34 +12,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.example.mcc.response.Message.SIGN_FAIL;
 import static com.example.mcc.response.Message.SIGN_SUCCESS;
-import static com.example.mcc.response.memberResponse.fail;
-import static com.example.mcc.response.memberResponse.success;
 
 @RestController
 @RequestMapping("/mcc")
 @Slf4j
 public class signController {
 
-
     private final MccSignService mccSignService;
+    private final SignResponse response;
 
-    public signController(MccSignService mccSignService) {
+    public signController(MccSignService mccSignService, SignResponse response) {
         this.mccSignService = mccSignService;
+        this.response = response;
     }
 
+
+    // 회원가입
     @PostMapping("/sign")
-    public memberResponse sign(@RequestBody  memberDto member){
+    public ResponseEntity<SignResponse> sign(@RequestBody memberDto member){
+
         log.info("sign 컨트롤러 호출");
+
         String number = member.getMemberNumber();
         String password = member.getMemberPassword();
-        log.info("요청받은 데이터 = {} , {}", member.getMemberNumber(), member.getMemberPassword());
 
-        String result = mccSignService.sign(number, password);
+        log.info("회원 가입을 시도하는 학번 , 비밀번호 = {} , {}", member.getMemberNumber(), member.getMemberPassword());
 
-        if(result.equals(SIGN_FAIL))
-            return fail(SIGN_FAIL);
-
-        return success(SIGN_SUCCESS);
+        if(!mccSignService.isDuplicate(number, password)){
+            response.setMessage(SIGN_SUCCESS);
+            return ResponseEntity.ok().body(response);
+        }
+        response.setMessage(SIGN_FAIL);
+        return ResponseEntity.badRequest().body(response);
     }
 
 }

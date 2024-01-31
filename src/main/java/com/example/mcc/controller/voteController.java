@@ -2,21 +2,19 @@ package com.example.mcc.controller;
 
 import com.example.mcc.Dto.VoteDto;
 import com.example.mcc.Dto.VoteForm;
-import com.example.mcc.Dto.memberDto;
 import com.example.mcc.entity.Team;
 import com.example.mcc.entity.Vote;
 import com.example.mcc.entity.member;
 import com.example.mcc.response.voteResponse;
 import com.example.mcc.service.MccVoteService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.mcc.response.Message.VOTE_SUCCESS;
 import static com.example.mcc.response.Message.VOTE_SUCCESS_SCORE_SAVE;
@@ -24,6 +22,7 @@ import static com.example.mcc.response.voteResponse.success;
 
 @RestController
 @RequestMapping("/mcc")
+@CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class voteController {
 

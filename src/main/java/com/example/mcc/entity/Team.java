@@ -1,7 +1,8 @@
 package com.example.mcc.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @Getter

@@ -17,12 +17,17 @@ public class MccSignService {
         this.memberRepository = memberRepository;
     }
 
-    public String sign(String number, String password){
-        member newMember = new member(number,password);
+    public boolean isDuplicate(String number, String password){
 
-        log.info("newMember에서 저장되는 객체는 = {} , {}",newMember.getMemberNumber(), newMember.getMemberPassword() );
+        boolean isExist = memberRepository.existsByMemberNumber(number);
 
-        memberRepository.save(newMember);
-        return SIGN_SUCCESS;
+        //같은 학번이 존재하지 않는다면
+        if(!isExist){
+            memberRepository.save(new member(number, password));
+            return false;
+        }
+
+        // 같은 학번이 존재한다면
+        return true;
     }
 }
