@@ -1,14 +1,11 @@
 package com.example.mcc.repository;
 
-import com.example.mcc.Dto.memberDto;
-import com.example.mcc.entity.member;
+import com.example.mcc.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface MemberRepository extends JpaRepository<member,Long> {
-    member findByMemberNumber(String number);
+public interface MemberRepository extends JpaRepository<Member,Long> {
+    Member findByMemberNumber(String number);
     boolean existsByMemberNumber(String number);
 }

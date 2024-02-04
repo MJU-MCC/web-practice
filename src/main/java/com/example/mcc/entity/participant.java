@@ -16,12 +16,12 @@ import java.time.LocalDate;
 public class participant {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberVoteId;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private member member;
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "vote_id")
@@ -29,7 +29,9 @@ public class participant {
 
     //투표한 날
     private LocalDate createdAt;
+
     //투표 하였는지
+    @Column(columnDefinition = "BOOLEAN")
     private Boolean isCheck;
 
 }

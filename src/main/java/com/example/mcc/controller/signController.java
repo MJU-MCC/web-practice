@@ -35,10 +35,11 @@ public class signController {
 
         String number = member.getMemberNumber();
         String password = member.getMemberPassword();
+        String role = member.getRole();
 
         log.info("회원 가입을 시도하는 학번 , 비밀번호 = {} , {}", member.getMemberNumber(), member.getMemberPassword());
 
-        if(!mccSignService.isDuplicate(number, password)){
+        if(!mccSignService.isDuplicateAndSignUp(number, password, role)){
             response.setMessage(SIGN_SUCCESS);
             return ResponseEntity.ok().body(response);
         }

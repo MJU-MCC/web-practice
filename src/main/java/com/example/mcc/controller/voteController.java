@@ -4,11 +4,15 @@ import com.example.mcc.Dto.VoteDto;
 import com.example.mcc.Dto.VoteForm;
 import com.example.mcc.entity.Team;
 import com.example.mcc.entity.Vote;
-import com.example.mcc.entity.member;
+import com.example.mcc.entity.Member;
 import com.example.mcc.response.voteResponse;
+import com.example.mcc.security.tokenUtil.JwtTokenUtil;
 import com.example.mcc.service.MccVoteService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +26,6 @@ import static com.example.mcc.response.voteResponse.success;
 
 @RestController
 @RequestMapping("/mcc")
-@CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class voteController {
 
@@ -35,6 +38,7 @@ public class voteController {
     // 투표 글 작성하기
     @PostMapping("/vote/regist")
     public voteResponse voteregist(@RequestBody VoteDto voteDto){
+        log.info("regist controller 진입");
         Vote inputVote = voteDto.getVote();
         //평가 될 팀
         List<Team> inputTeams = voteDto.getTeam();
@@ -63,7 +67,7 @@ public class voteController {
     }
 
     //투표 목록 불러오기 API
-    @GetMapping("/vote/list")
+    @GetMapping("/list")
     public voteResponse votelist(){
 
         //투표 제목들을 담은 리스트를 반환 받음
@@ -77,14 +81,8 @@ public class voteController {
     public ResponseEntity<VoteForm> voteform(@PathVariable Long number
             , HttpServletRequest request){
 
-        HttpSession session = request.getSession();
-        Object sessionMember = session.getAttribute("loginMember");
-        member loginMember = (member) sessionMember;
-        log.info("sessionMember = {}", ((member) sessionMember).getMemberNumber());
-
-        String memberNumber = loginMember.getMemberNumber();
-        String memberPassword = loginMember.getMemberPassword();
-        log.info("memberNumber , memberPassword = {} , {}",memberNumber , memberPassword);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String memberNumber = (String) authentication.getPrincipal();
 
         //만약 투표를 한 회원이라면 안된다고 알려주기
         if(mccVoteService.isReVote(memberNumber,number))
@@ -99,14 +97,8 @@ public class voteController {
             ,@RequestBody VoteDto voteBoard
             , HttpServletRequest request){
 
-        HttpSession session = request.getSession();
-        Object sessionMember = session.getAttribute("loginMember");
-        member loginMember = (member) sessionMember;
-        log.info("sessionMember = {}", ((member) sessionMember).getMemberNumber());
-
-
-        log.info("세션을 통해서 꺼낸 유저 정보는 = {}", loginMember.getMemberNumber());
-        String memberNumber = loginMember.getMemberNumber();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String memberNumber = (String) authentication.getPrincipal();
 
         //데이터베이스에 저장되어 있는 투표 가져오기
         //데이터베이스에 저장되어 있는 동아리원 가져오기

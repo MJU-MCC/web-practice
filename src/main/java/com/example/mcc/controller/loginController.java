@@ -5,12 +5,19 @@ import com.example.mcc.response.LoginResponse;
 import com.example.mcc.service.MccLoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 import static com.example.mcc.response.Message.*;
 
@@ -29,13 +36,23 @@ public class loginController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody memberDto inputuser){
+    public ResponseEntity<LoginResponse> login(@RequestBody memberDto inputmember , HttpServletRequest request){
 
-        String token = mccLoginService.login(inputuser.getMemberNumber(),inputuser.getMemberPassword());
+        String memberNumber = inputmember.getMemberNumber();
+        String memberPassword = inputmember.getMemberPassword();
 
+        String tokens = mccLoginService.login(memberNumber, memberPassword);
+
+        if(tokens == null){
+            response.setResult(LOGIN_FAIL , null , null);
+            return ResponseEntity.badRequest().body(response);
+        }
+//        String accessToken = tokens.get(0);
+//        String refreshToken = tokens.get(1);
 
         log.info("로그인 성공");
-        response.setResult(LOGIN_SUCCESS , token);
+        response.setMessage(LOGIN_SUCCESS);
+        response.setAccessToken(tokens);
 
         return ResponseEntity.ok().body(response);
     }
@@ -45,7 +62,7 @@ public class loginController {
     @PostMapping("/logout")
     public ResponseEntity<LoginResponse> logout(){
 
-        response.setResult(LOGOUT_SUCCESS,null);
+        response.setResult(LOGOUT_SUCCESS,null,null);
 
         return ResponseEntity.ok().body(response);
 

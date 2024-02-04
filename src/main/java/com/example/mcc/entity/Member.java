@@ -11,9 +11,11 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class member {
+@NoArgsConstructor
+public class Member {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)     //strategy를 이렇게 해야 테이블 pk값이 독립적으로 증가
     private Long memberId;
 
     //학번
@@ -24,17 +26,18 @@ public class member {
     //권한
     private String role;
 
+    @OneToOne(mappedBy = "member")
+    private Token token;
+
 
     @OneToMany(mappedBy = "member")
     @JsonIgnore
     private List<participant> participantList = new ArrayList<>();
 
-    public member(String memberNumber, String memberPassword) {
+    public Member(String memberNumber, String memberPassword , String role) {
         this.memberNumber = memberNumber;
         this.memberPassword = memberPassword;
+        this.role = role;
     }
 
-    public member() {
-
-    }
 }

@@ -1,10 +1,9 @@
 package com.example.mcc.service;
 
 import com.example.mcc.Dto.VoteForm;
-import com.example.mcc.Dto.memberDto;
 import com.example.mcc.entity.Team;
 import com.example.mcc.entity.Vote;
-import com.example.mcc.entity.member;
+import com.example.mcc.entity.Member;
 import com.example.mcc.entity.participant;
 import com.example.mcc.repository.MemberRepository;
 import com.example.mcc.repository.ParticipantRepository;
@@ -18,7 +17,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.mcc.response.Message.VOTE_SUCCESS_SAVE;
 
@@ -78,7 +76,7 @@ public class MccVoteService {
     public boolean isReVote(String number,Long voteNumber){
 
         //회원 정보를 바탕으로 회원 테이블에 PK값 가져오기
-        member findMember = memberRepository.findByMemberNumber(number);
+        Member findMember = memberRepository.findByMemberNumber(number);
         Long memberId = findMember.getMemberId();
 
         //투표 정보를 바탕으로 투표 테이블에 PK값 가져오기
@@ -96,7 +94,7 @@ public class MccVoteService {
 
     public void enter(String savedMembernumber,Long savedVoteNumber,List<Team> teams){
         //저장소에서 투표 요청을 한 유저 꺼내기
-        member findMember = memberRepository.findByMemberNumber(savedMembernumber);
+        Member findMember = memberRepository.findByMemberNumber(savedMembernumber);
         log.info("findMember = {}",findMember);
 
         //저장소에서 투표 요청을 한 투표 꺼내기

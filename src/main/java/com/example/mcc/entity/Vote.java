@@ -16,7 +16,7 @@ import java.util.List;
 public class Vote {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voteId;
 
     //투표 제목

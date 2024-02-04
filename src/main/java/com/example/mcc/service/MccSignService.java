@@ -1,11 +1,9 @@
 package com.example.mcc.service;
 
-import com.example.mcc.entity.member;
+import com.example.mcc.entity.Member;
 import com.example.mcc.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import static com.example.mcc.response.Message.SIGN_SUCCESS;
 
 @Service
 @Slf4j
@@ -17,13 +15,13 @@ public class MccSignService {
         this.memberRepository = memberRepository;
     }
 
-    public boolean isDuplicate(String number, String password){
+    public boolean isDuplicateAndSignUp(String number, String password, String role){
 
         boolean isExist = memberRepository.existsByMemberNumber(number);
 
         //같은 학번이 존재하지 않는다면
         if(!isExist){
-            memberRepository.save(new member(number, password));
+            memberRepository.save(new Member(number, password,role));
             return false;
         }
 

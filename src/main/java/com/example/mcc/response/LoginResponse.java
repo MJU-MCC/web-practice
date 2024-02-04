@@ -11,10 +11,12 @@ import org.springframework.stereotype.Component;
 public class LoginResponse {
 
     private String message;
-    private String token;
+    private String accessToken;
+    private String refreshToken;
 
-    public void setResult(String ms , String tk){
+    public void setResult(String ms , String at , String rt){
         this.message = ms ;
-        this.token = tk;
+        this.accessToken = at;
+        this.refreshToken = rt;
     }
 }
