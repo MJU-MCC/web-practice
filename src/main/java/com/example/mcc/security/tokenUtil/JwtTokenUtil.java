@@ -11,7 +11,9 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenUtil {
 
-    //jwt 토큰 만드는 메서드
+    /*
+    * jwt 토큰 만드는 메서드
+     */
     public static String accessTokenCreate(String memberNumber , String key , long expireTImeMs){
 
         Claims claims = Jwts.claims();
@@ -30,6 +32,9 @@ public class JwtTokenUtil {
                 .compact();
     }
 
+    /*
+    * 리프레시 토큰 만드는 메서드
+     */
     public static String refreshTokenCreate(String key , long expiredTimeMs){
         byte[] bytes = key.getBytes();
         byte[] encodeBytes = Base64.getEncoder().encode(bytes);
