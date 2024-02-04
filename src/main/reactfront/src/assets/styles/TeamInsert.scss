@@ -1,0 +1,18 @@
+.team{
+    display: flex;
+    justify-content: center;
+    #team-input{
+        width: 200px;
+    }
+}
+#vote{
+    margin: 10px;
+    
+    input{
+        margin: 10px;
+    }
+
+    #submit{
+        float: right;
+    }
+}

@@ -1,13 +1,13 @@
 version: '3'
 
 services:
-  react-app:
-    image: rlagustjd/reactfront:latest
-    ports:
-      - "3000:3000"
-    depends_on:
-      - spring-boot-app
-      - mysql-db
+#  react-app:
+#    image: rlagustjd/reactfront:latest
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - spring-boot-app
+#      - mysql-db
 
   spring-boot-app:
     image: rlagustjd/springboot:latest
@@ -27,7 +27,7 @@ services:
       MYSQL_PASSWORD: mcc123
     ports:
       - "3306:3306"
-    command:
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_unicode_ci
-      --skip-character-set-client-handshake
+#    command:
+#      --character-set-server=utf8mb4
+#      --collation-server=utf8mb4_unicode_ci
+#      --skip-character-set-client-handshake

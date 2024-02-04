@@ -1,0 +1,16 @@
+.voteMain{
+    .votes{
+        display: flex;
+        justify-content: center;
+        #title{
+            background-color:rgb(4, 4, 35) ;
+            border-radius: 5%;
+            width: 30rem;
+            height: 30px;
+            font-size: 20px;
+            text-align: left;
+            color: white;
+            text-decoration-line:none;
+        }
+    }
+}

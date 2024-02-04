@@ -1,0 +1,35 @@
+.project{
+    #img{
+        width: 700px;
+        margin-left: 100px;
+        // display: flex;
+        // justify-content:center;
+        
+        
+        // margin-top: 50px;
+    }
+
+    .option{
+        margin-left: 200px;
+        display: flex;
+        justify-content: left;
+        p{
+            margin: 30px;
+        }
+    }
+
+    .active{
+        color: rgb(32, 122, 122);
+    }
+
+    .gird-container{
+        display: grid;
+        grid-template-columns:repeat(3,100px) ;
+        grid-template-rows: repeat(3,50px);
+        grid-gap: 10px;
+    }
+
+    .grid-item{
+        width: 100px;
+    }
+}

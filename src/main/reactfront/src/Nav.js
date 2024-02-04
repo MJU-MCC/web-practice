@@ -1,22 +1,34 @@
-import React from 'react';
-import Logo from './assets/images/IMG_1027.PNG'
+import React, { useState } from 'react';
+import Logo from './assets/images/good.png'
 import './assets/styles/Nav.scss'
 import {Link} from 'react-router-dom'
+import Button from 'react-bootstrap/Button';
+
 const Nav = () => {
+    const [activeLink, setActiveLink]=useState();
+
+    const handleLinkClick=(linkId)=>{
+        setActiveLink(linkId)
+    }
+
     return (
         <div className='Navbar'>
-            <Link to='/'>
-            <img id='logo' src={Logo} alt='logo'></img>
+            <Link to='/'  onClick={()=>handleLinkClick('home')}>
+            <img id='logo' src={Logo} alt='logo' className={activeLink==='home'?'active':''}></img>
             </Link>
             <p id='about'>About</p>
             <p id='study'>Study</p>
-            <p id='project'>Project</p>
-            <p id='vote'>Vote</p>
-            <Link to='/mypage'>
-                <p id='mypage'>My Page</p>
+            <Link to='/project'>
+                <p id='project'>Project</p>
+            </Link>
+            <Link to='./vote' onClick={()=>handleLinkClick('vote')}>
+                <p className={activeLink==='vote'?'active':''}>Vote</p>
+            </Link>
+            <Link to='/mypage' onClick={()=>handleLinkClick('mypage')}>
+                <p className={activeLink==='mypage'?'active':''}>My Page</p>
             </Link>
             <Link to='/sign'>
-                <p id='login'>Login</p>
+                <Button type='button' className='btn btn-outline-primary' id='login'>Login</Button>
             </Link>
             
         </div>
