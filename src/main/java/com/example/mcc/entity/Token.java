@@ -1,20 +1,18 @@
 package com.example.mcc.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
 
-import javax.persistence.*;
+import java.util.concurrent.TimeUnit;
 
-@Entity
-@Getter
-@Setter
+@RedisHash
 public class Token {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tokenId;
 
+    @Id
+    private String memberNumber;
+
+    @TimeToLive(unit = TimeUnit.HOURS)
     private String refreshToken;
 
-    @OneToOne
-    private Member member;
 }

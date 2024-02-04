@@ -26,9 +26,6 @@ public class Member {
     //권한
     private String role;
 
-    @OneToOne(mappedBy = "member")
-    private Token token;
-
 
     @OneToMany(mappedBy = "member")
     @JsonIgnore
