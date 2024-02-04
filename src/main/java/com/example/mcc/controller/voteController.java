@@ -4,35 +4,32 @@ import com.example.mcc.Dto.VoteDto;
 import com.example.mcc.Dto.VoteForm;
 import com.example.mcc.entity.Team;
 import com.example.mcc.entity.Vote;
-import com.example.mcc.entity.Member;
 import com.example.mcc.response.voteResponse;
-import com.example.mcc.security.tokenUtil.JwtTokenUtil;
 import com.example.mcc.service.MccVoteService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
 
 import static com.example.mcc.response.Message.VOTE_SUCCESS;
 import static com.example.mcc.response.Message.VOTE_SUCCESS_SCORE_SAVE;
-import static com.example.mcc.response.voteResponse.success;
 
 @RestController
 @RequestMapping("/mcc")
 @Slf4j
 public class voteController {
 
-    private final MccVoteService mccVoteService;
+    private  MccVoteService mccVoteService;
+    private  voteResponse voteResponse;
 
-    public voteController(MccVoteService mccVoteService) {
+    public voteController(MccVoteService mccVoteService, com.example.mcc.response.voteResponse voteResponse) {
         this.mccVoteService = mccVoteService;
+        this.voteResponse = voteResponse;
     }
 
     // 투표 글 작성하기
@@ -63,7 +60,10 @@ public class voteController {
         }
         //저장소에 저장
         String message = mccVoteService.saveVote(trySaveVote , inputTeams);
-        return success(message);
+        voteResponse.setMessage(message);
+        voteResponse.setVotes(null);
+
+        return voteResponse;
     }
 
     //투표 목록 불러오기 API
@@ -72,8 +72,10 @@ public class voteController {
 
         //투표 제목들을 담은 리스트를 반환 받음
         List<String> titleList = mccVoteService.showList();
+        voteResponse.setVotes(titleList);
+        voteResponse.setMessage(VOTE_SUCCESS);
 
-        return success(VOTE_SUCCESS,titleList);
+        return voteResponse;
     }
 
     // 투표 글 저장한 평가목록 , 팀 데이터 불러오기
@@ -106,7 +108,9 @@ public class voteController {
 
         List<Team> inputTeam = voteBoard.getTeam();
         mccVoteService.enter(memberNumber, number,inputTeam);
-        return success(VOTE_SUCCESS_SCORE_SAVE);
+        voteResponse.setMessage(VOTE_SUCCESS_SCORE_SAVE);
+        voteResponse.setVotes(null);
+        return voteResponse;
     }
 
     @GetMapping("/vote/result")
