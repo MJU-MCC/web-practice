@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtTokenFilter(secretKey), UsernamePasswordAuthenticationFilter.class);
         http
                 .authorizeRequests()
-                .antMatchers("/mcc/vote/regist").hasAuthority("ADMIN")            //투표 등록은 관리자만 할 수 있도록
+                //.antMatchers("/mcc/vote/regist").hasAuthority("ADMIN")            //투표 등록은 관리자만 할 수 있도록
                 .antMatchers("/mcc/vote/**").hasAuthority("USER")            //투표 관련 자원은 권한이 있는지 체크하기
                 .anyRequest().permitAll();                                //나머지는 모두 접근 허용
         return http.build();

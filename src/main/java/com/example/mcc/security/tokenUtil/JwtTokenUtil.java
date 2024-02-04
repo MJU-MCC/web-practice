@@ -4,9 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
-import java.awt.*;
 import java.util.Base64;
 import java.util.Date;
 
@@ -14,7 +12,7 @@ import java.util.Date;
 public class JwtTokenUtil {
 
     //jwt 토큰 만드는 메서드
-    public static String createToken(String memberNumber , String key , long expireTImeMs){
+    public static String accessTokenCreate(String memberNumber , String key , long expireTImeMs){
 
         Claims claims = Jwts.claims();
         claims.put("memberNumber",memberNumber);
@@ -29,6 +27,16 @@ public class JwtTokenUtil {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expireTImeMs))
                 .signWith(SignatureAlgorithm.HS256, encodeBytes)
+                .compact();
+    }
+
+    public static String refreshTokenCreate(String key , long expiredTimeMs){
+        byte[] bytes = key.getBytes();
+        byte[] encodeBytes = Base64.getEncoder().encode(bytes);
+
+        return Jwts.builder()
+                .setExpiration(new Date(System.currentTimeMillis() + expiredTimeMs))
+                .signWith(SignatureAlgorithm.HS256 , encodeBytes)
                 .compact();
     }
 

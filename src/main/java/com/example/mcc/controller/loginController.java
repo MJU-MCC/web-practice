@@ -41,7 +41,7 @@ public class loginController {
         String memberNumber = inputmember.getMemberNumber();
         String memberPassword = inputmember.getMemberPassword();
 
-        String tokens = mccLoginService.login(memberNumber, memberPassword);
+        List<String> tokens = mccLoginService.login(memberNumber, memberPassword);
 
         if(tokens == null){
             response.setResult(LOGIN_FAIL , null , null);
@@ -52,7 +52,8 @@ public class loginController {
 
         log.info("로그인 성공");
         response.setMessage(LOGIN_SUCCESS);
-        response.setAccessToken(tokens);
+        response.setAccessToken(tokens.get(0));
+        response.setRefreshToken(tokens.get(1));
 
         return ResponseEntity.ok().body(response);
     }
