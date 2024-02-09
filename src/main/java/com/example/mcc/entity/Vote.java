@@ -15,25 +15,25 @@ import java.util.List;
 @AllArgsConstructor
 public class Vote {
 
+    //투표번호
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long voteId;
+    private Long Id;
 
     //투표 제목
     private String voteName;
 
     //평가 항목
-    @ElementCollection
-    private List<String> Evaluation;
+    private String evaluation;
 
-    //투표 날짜
-    private LocalDate voteDate;
+    //평가 받을 팀 이름
+    private String teamName;
+
+    //점수
+    private Integer score;
 
 
     @OneToMany(mappedBy = "vote")
     private List<participant> participantList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "vote")
-    @JsonIgnore
-    private List<Team> teamList = new ArrayList<>();
 }

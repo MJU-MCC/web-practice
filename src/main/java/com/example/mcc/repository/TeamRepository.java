@@ -1,6 +1,5 @@
 package com.example.mcc.repository;
 
-import com.example.mcc.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

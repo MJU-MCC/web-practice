@@ -1,7 +1,6 @@
 package com.example.mcc.service;
 
 import com.example.mcc.Dto.VoteForm;
-import com.example.mcc.entity.Team;
 import com.example.mcc.entity.Vote;
 import com.example.mcc.entity.Member;
 import com.example.mcc.entity.participant;
