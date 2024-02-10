@@ -1,8 +1,6 @@
 package com.example.mcc.controller;
 
-import com.example.mcc.Dto.VoteDto;
-import com.example.mcc.Dto.VoteForm;
-import com.example.mcc.entity.Team;
+import com.example.mcc.Dto.RegistVoteDto;
 import com.example.mcc.entity.Vote;
 import com.example.mcc.response.voteResponse;
 import com.example.mcc.service.MccVoteService;
@@ -13,11 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.util.List;
 
-import static com.example.mcc.response.Message.VOTE_SUCCESS;
-import static com.example.mcc.response.Message.VOTE_SUCCESS_SCORE_SAVE;
+import static com.example.mcc.response.Message.*;
 
 @RestController
 @RequestMapping("/mcc")
@@ -34,36 +30,36 @@ public class voteController {
 
     // 투표 글 작성하기
     @PostMapping("/vote/regist")
-    public voteResponse voteregist(@RequestBody VoteDto voteDto){
-        log.info("regist controller 진입");
-        Vote inputVote = voteDto.getVote();
-        //평가 될 팀
-        List<Team> inputTeams = voteDto.getTeam();
+    public ResponseEntity<voteResponse> voteregist(@RequestBody RegistVoteDto registVote){
+        log.info("투표 글 작성 controller 시작");
 
+        /*
+        * 투표제목 , 평가항목 , 평가 받을 팀 DB에 저정하기
+        * */
+        String voteName = registVote.getVoteName();
+        String evaluationName = registVote.getEvaluationName();
+        String teamName = registVote.getTeamName();
 
-        Vote trySaveVote = new Vote();
+        Vote saveVote = Vote.builder()
+                .voteName(voteName)
+                .evaluation(evaluationName)
+                .teamName(teamName)
+                .build();
 
-        //투표 제목
-        String title = inputVote.getVoteName();
-        //평가 항목
-        List<String> evals = inputVote.getEvaluation();
+        log.info("Builder로 만들어진 Vote = {}",saveVote);
 
-        //저장할 투표 테이블 객체 세팅 완료
-        trySaveVote.setVoteName(title);
-        trySaveVote.setVoteDate(LocalDate.now());
-        trySaveVote.setEvaluation(evals);
-        trySaveVote.setTeamList(inputTeams);
+        String message = mccVoteService.saveVote(saveVote);
 
-
-        for(Team ts : inputTeams){
-            ts.setVote(trySaveVote);
+        if(message.equals(VOTE_FAIL_SAVE)){
+            //투표저장을 위한 투표 이름 , 평가항목 , 팀이름이 하나라도 안적혀 있다면 실패.
+            voteResponse.setMessage(VOTE_FAIL_SAVE);
+            voteResponse.setVotes(saveVote);
+            return ResponseEntity.badRequest().body(voteResponse);
         }
-        //저장소에 저장
-        String message = mccVoteService.saveVote(trySaveVote , inputTeams);
-        voteResponse.setMessage(message);
-        voteResponse.setVotes(null);
 
-        return voteResponse;
+        voteResponse.setMessage(VOTE_SUCCESS_SAVE);
+        voteResponse.setVotes(saveVote);
+        return ResponseEntity.ok().body(voteResponse);
     }
 
     //투표 목록 불러오기 API
@@ -96,7 +92,7 @@ public class voteController {
     //투표 점수 저장하기
     @PostMapping("/vote/save")
     public voteResponse votesave(@RequestParam("number")Long number
-            ,@RequestBody VoteDto voteBoard
+            ,@RequestBody RegistVoteDto voteBoard
             , HttpServletRequest request){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

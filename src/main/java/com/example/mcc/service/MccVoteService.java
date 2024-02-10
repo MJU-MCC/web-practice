@@ -1,12 +1,10 @@
 package com.example.mcc.service;
 
-import com.example.mcc.Dto.VoteForm;
 import com.example.mcc.entity.Vote;
 import com.example.mcc.entity.Member;
 import com.example.mcc.entity.participant;
 import com.example.mcc.repository.MemberRepository;
 import com.example.mcc.repository.ParticipantRepository;
-import com.example.mcc.repository.TeamRepository;
 import com.example.mcc.repository.VoteRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.example.mcc.response.Message.VOTE_FAIL_SAVE;
 import static com.example.mcc.response.Message.VOTE_SUCCESS_SAVE;
 
 @Service
@@ -27,7 +26,6 @@ public class MccVoteService {
     private VoteRepository voteRepository;
     private MemberRepository memberRepository;
     private ParticipantRepository participantRepository;
-    private TeamRepository teamRepository;
 
 
     public List<String> showList() {
@@ -47,9 +45,19 @@ public class MccVoteService {
         return list;
     }
     //투표 저장하기
-    public String saveVote(Vote vote,List<Team> teams) {
-        voteRepository.save(vote);
-        teamRepository.saveAll(teams);
+    public String saveVote(Vote saveVote) {
+        if(saveVote.getVoteName().isEmpty()){
+            return VOTE_FAIL_SAVE;
+        }
+        if(saveVote.getTeamName().isEmpty()){
+            return VOTE_FAIL_SAVE;
+        }
+        if(saveVote.getEvaluation().isEmpty()){
+            return VOTE_FAIL_SAVE;
+        }
+
+        voteRepository.save(saveVote);
+
         return VOTE_SUCCESS_SAVE;
     }
     //투표 찾기
