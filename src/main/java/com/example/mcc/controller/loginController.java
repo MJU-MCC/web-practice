@@ -19,7 +19,7 @@ import java.util.List;
 
 import static com.example.mcc.response.Message.*;
 
-@Api(value = "MCC 로그인 Api")
+@Api(tags = "MCC 로그인 Api")
 @RestController
 @RequestMapping("/mcc")
 @Slf4j

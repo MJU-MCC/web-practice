@@ -17,7 +17,7 @@ import java.util.Map;
 
 import static com.example.mcc.response.Message.*;
 
-@Api(value = "투표 기능 Api")
+@Api(tags = "투표 기능 Api")
 @RestController
 @RequestMapping("/mcc")
 @Slf4j
