@@ -29,17 +29,19 @@ public class MccVoteService {
     public Map<Long, Vote> getVoteList() {
         Map<Long, Vote> votes = new HashMap<>();
 
-        Iterator<Vote> findVotes = voteRepository.findAll()
-                                    .stream()
-                                    .iterator();
 
-        while(!findVotes.hasNext()){
-            Vote nextVote = findVotes.next();
-            Long number = nextVote.getVoteId();
+        log.info("list service");
 
-            votes.put(number,nextVote);
+        for (Iterator<Vote> it = voteRepository.findAll()
+                .stream()
+                .iterator();
+             it.hasNext(); ) {
+            Vote vote = it.next();
+            Long number = vote.getVoteId();
 
-            log.info("꺼낸 vote의 넘버 = {} , {}",number , nextVote.getVoteName());
+            votes.put(number,vote);
+
+            log.info("꺼낸 vote의 넘버 = {} , {}",number , vote.getVoteName());
         }
         return votes;
     }

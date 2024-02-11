@@ -70,6 +70,7 @@ public class voteController {
     @ApiOperation(value = "투표 리스트 불러오기 Api")
     @GetMapping("/list")
     public ResponseEntity<Map<Long, Vote>> votelist(){
+        log.info("list controller");
         Map<Long, Vote> voteMap = mccVoteService.getVoteList();
 
         return ResponseEntity.ok().body(voteMap);
