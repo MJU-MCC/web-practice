@@ -19,7 +19,7 @@ public class Vote {
     //투표번호
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long voteId;
 
     //투표 제목
     private String voteName;

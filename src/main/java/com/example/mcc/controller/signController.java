@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.example.mcc.response.Message.SIGN_FAIL;
 import static com.example.mcc.response.Message.SIGN_SUCCESS;
 
-@Api(value = "MCC 회원가입 API")
+@Api(value = "MCC 회원가입 Api")
 @RestController
 @RequestMapping("/mcc")
 @Slf4j
@@ -31,7 +31,7 @@ public class signController {
 
 
     // 회원가입
-    @ApiOperation(value = "회원가입 Api" ,notes = "학번 , 휴대전화 뒷자리 , role")
+    @ApiOperation(value = "회원가입 Api" ,notes = "학번 , 휴대전화 뒷번호, role")
     @PostMapping("/sign")
     public ResponseEntity<SignResponse> sign(@RequestBody memberDto member){
 

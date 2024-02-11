@@ -1,8 +1,11 @@
 package com.example.mcc.controller;
 
+import com.example.mcc.Dto.LoginDto;
 import com.example.mcc.Dto.memberDto;
 import com.example.mcc.response.LoginResponse;
 import com.example.mcc.service.MccLoginService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +19,7 @@ import java.util.List;
 
 import static com.example.mcc.response.Message.*;
 
+@Api(value = "MCC 로그인 Api")
 @RestController
 @RequestMapping("/mcc")
 @Slf4j
@@ -30,8 +34,9 @@ public class loginController {
     }
 
     // 로그인
+    @ApiOperation(value = "로그인 Api" , notes = "학번 , 휴대전화 뒷번호")
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody memberDto inputmember , HttpServletRequest request){
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginDto inputmember){
 
         String memberNumber = inputmember.getMemberNumber();
         String memberPassword = inputmember.getMemberPassword();
@@ -55,6 +60,7 @@ public class loginController {
 
 
     // 로그아웃
+    @ApiOperation(value = "로그아웃 Api" )
     @PostMapping("/logout")
     public ResponseEntity<LoginResponse> logout(){
 

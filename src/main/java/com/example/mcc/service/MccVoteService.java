@@ -25,7 +25,7 @@ public class MccVoteService {
     private MemberRepository memberRepository;
     private ParticipantRepository participantRepository;
 
-
+    //투표 리스트 불러오기
     public Map<Long, Vote> getVoteList() {
         Map<Long, Vote> votes = new HashMap<>();
 
@@ -35,7 +35,7 @@ public class MccVoteService {
 
         while(!findVotes.hasNext()){
             Vote nextVote = findVotes.next();
-            Long number = nextVote.getId();
+            Long number = nextVote.getVoteId();
 
             votes.put(number,nextVote);
 
@@ -43,6 +43,7 @@ public class MccVoteService {
         }
         return votes;
     }
+
     //투표 저장하기
     public String saveVote(Vote saveVote) {
         if(saveVote.getVoteName().isEmpty()){
@@ -59,73 +60,64 @@ public class MccVoteService {
 
         return VOTE_SUCCESS_SAVE;
     }
+
     //투표 찾기
-    public VoteForm searchVote(Long number) {
+    public Vote searchVote(Long number) {
         Vote findVote = voteRepository.findByvoteId(number);
-
+        log.info("findVote = {}", findVote);
         //프론트에게 전달 해야하는 정보들 -> 투표 제목 , 평가 항목들 , 팀
-        List<Team> findTeam = teamRepository.findByVote_VoteId(number);//팀
-        ArrayList<String> teamNames = new ArrayList<>();
 
-        for(Team t:findTeam){
-            teamNames.add(t.getTeamName());
-        }
-        VoteForm sendResult = new VoteForm(findVote.getVoteName()
-                                            , findVote.getEvaluation()
-                                            , teamNames);
-
-
-        return sendResult;
+        return findVote;
 
     }
-
-    public boolean isReVote(String number,Long voteNumber){
-
-        //회원 정보를 바탕으로 회원 테이블에 PK값 가져오기
-        Member findMember = memberRepository.findByMemberNumber(number);
-        Long memberId = findMember.getMemberId();
-
-        //투표 정보를 바탕으로 투표 테이블에 PK값 가져오기
-        Vote findVote = voteRepository.findByvoteId(voteNumber);
-        Long voteNum = findVote.getVoteId();
-
-        participant savedPar = participantRepository.findByMember_MemberIdAndVote_VoteId(memberId, voteNum);
-        if(savedPar != null) {
-            Boolean isDone = savedPar.getIsCheck();
-            return true;
-        }
-
-        return false;
-    }
-
-    public void enter(String savedMembernumber,Long savedVoteNumber,List<Team> teams){
-        //저장소에서 투표 요청을 한 유저 꺼내기
-        Member findMember = memberRepository.findByMemberNumber(savedMembernumber);
-        log.info("findMember = {}",findMember);
-
-        //저장소에서 투표 요청을 한 투표 꺼내기
-        Vote findVote = voteRepository.findByvoteId(savedVoteNumber);
-        log.info("findVote = {}",findVote);
-        //저장소에서 투표에 맞는 팀들을 꺼내기
-        List<Team> findTeams = teamRepository.findByVote_VoteId(savedVoteNumber);
-
-        for(int i=0; i<teams.size(); i++){
-            findTeams.get(i).setVoteScore(teams.get(i).getVoteScore());
-        }
-        for(Team t: findTeams)
-            System.out.println("저장된 팀들의 점수는 이렇게 됩니다 = "+t.getVoteScore());
-
-        participant enter = new participant();
-        enter.setVote(findVote);
-        enter.setMember(findMember);
-        enter.setIsCheck(true);
-        enter.setCreatedAt(LocalDate.now());
-        ArrayList<participant> partList = new ArrayList<>();
-        partList.add(enter);
-
-        participantRepository.save(enter);
-        findMember.setParticipantList(partList);
-        memberRepository.save(findMember);
-
-    }
+//
+//    public boolean isReVote(String number,Long voteNumber){
+//
+//        //회원 정보를 바탕으로 회원 테이블에 PK값 가져오기
+//        Member findMember = memberRepository.findByMemberNumber(number);
+//        Long memberId = findMember.getMemberId();
+//
+//        //투표 정보를 바탕으로 투표 테이블에 PK값 가져오기
+//        Vote findVote = voteRepository.findByvoteId(voteNumber);
+//        Long voteNum = findVote.getVoteId();
+//
+//        participant savedPar = participantRepository.findByMember_MemberIdAndVote_VoteId(memberId, voteNum);
+//        if(savedPar != null) {
+//            Boolean isDone = savedPar.getIsCheck();
+//            return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    public void enter(String savedMembernumber,Long savedVoteNumber,List<Team> teams){
+//        //저장소에서 투표 요청을 한 유저 꺼내기
+//        Member findMember = memberRepository.findByMemberNumber(savedMembernumber);
+//        log.info("findMember = {}",findMember);
+//
+//        //저장소에서 투표 요청을 한 투표 꺼내기
+//        Vote findVote = voteRepository.findByvoteId(savedVoteNumber);
+//        log.info("findVote = {}",findVote);
+//        //저장소에서 투표에 맞는 팀들을 꺼내기
+//        List<Team> findTeams = teamRepository.findByVote_VoteId(savedVoteNumber);
+//
+//        for(int i=0; i<teams.size(); i++){
+//            findTeams.get(i).setVoteScore(teams.get(i).getVoteScore());
+//        }
+//        for(Team t: findTeams)
+//            System.out.println("저장된 팀들의 점수는 이렇게 됩니다 = "+t.getVoteScore());
+//
+//        participant enter = new participant();
+//        enter.setVote(findVote);
+//        enter.setMember(findMember);
+//        enter.setIsCheck(true);
+//        enter.setCreatedAt(LocalDate.now());
+//        ArrayList<participant> partList = new ArrayList<>();
+//        partList.add(enter);
+//
+//        participantRepository.save(enter);
+//        findMember.setParticipantList(partList);
+//        memberRepository.save(findMember);
+//
+//    }
 }
