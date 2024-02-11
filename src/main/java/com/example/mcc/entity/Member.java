@@ -22,7 +22,6 @@ public class Member {
     private String memberNumber;
     //비밀번호
     private String memberPassword;
-
     //권한
     private String role;
 

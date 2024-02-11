@@ -1,10 +1,14 @@
 package com.example.mcc.Dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,15 +16,22 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RegistVoteDto {
 
-    //투표 제목
-    @ApiModelProperty(example = "2024학년도 우수 프로젝트 투표")
+    @ApiModelProperty(
+            name = "투표 제목",
+            example = "2024학년도 우수 프로젝트 투표"
+    )
     private String voteName;
 
-    //평가 : 평가항목
-    @ApiModelProperty(example = "창의성")
-    private String evaluationName;
+//    @ApiModelProperty(
+//            name = "평가 항목들",
+//            dataType = "List",
+//            example = "[\"디자인\",\"편의성\",\"창의성\",\"사업성\"]"
+//    )
+    @Schema(name = "평가 항목들")
+    private List<String> evaluationName;
 
-    //평가 : 평가 받을 팀
-    @ApiModelProperty(example = "개똥이팀")
-    private String teamName;
+    @ApiModelProperty(
+            name = "평가 받을 팀들"
+    )
+    private List<String> teamName;
 }

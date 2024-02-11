@@ -14,6 +14,5 @@ import java.util.List;
 public class voteResponse {
 
     private String message;
-    private Vote votes;
 
 }

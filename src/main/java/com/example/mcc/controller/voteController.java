@@ -5,14 +5,17 @@ import com.example.mcc.entity.Vote;
 import com.example.mcc.response.voteResponse;
 import com.example.mcc.service.MccVoteService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.mcc.response.Message.*;
@@ -33,6 +36,9 @@ public class voteController {
 
     // 투표 글 작성하기
     @ApiOperation(value = "투표 글 작성 Api" , notes = "투표 제목 , 평가항목 , 팀")
+    @Parameters({
+            @Parameter(name = "registVote" , description = "List Of Vote")
+    })
     @PostMapping("/vote/regist")
     public ResponseEntity<voteResponse> voteregist(@RequestBody RegistVoteDto registVote){
         log.info("투표 글 작성 controller 시작");
@@ -41,28 +47,29 @@ public class voteController {
         * 투표제목 , 평가항목 , 평가 받을 팀 DB에 저정하기
         * */
         String voteName = registVote.getVoteName();
-        String evaluationName = registVote.getEvaluationName();
-        String teamName = registVote.getTeamName();
+        List<String> evaluationList = registVote.getEvaluationName();
+        List<String> teamNameList = registVote.getTeamName();
 
-        Vote saveVote = Vote.builder()
-                .voteName(voteName)
-                .evaluation(evaluationName)
-                .teamName(teamName)
-                .build();
-
-        log.info("Builder로 만들어진 Vote = {}",saveVote);
-
-        String message = mccVoteService.saveVote(saveVote);
+        String message = VOTE_FAIL_SAVE;
+        for(String ev : evaluationList){
+            for(String tn : teamNameList){
+            Vote saveVote = Vote.builder()
+                    .voteName(voteName)
+                    .evaluation(ev)
+                    .teamName(tn)
+                    .build();
+                log.info("Builder로 만들어진 Vote = {}",saveVote);
+                message = mccVoteService.saveVote(saveVote);
+            }
+        }
 
         if(message.equals(VOTE_FAIL_SAVE)){
             //투표저장을 위한 투표 이름 , 평가항목 , 팀이름이 하나라도 안적혀 있다면 실패.
             voteResponse.setMessage(VOTE_FAIL_SAVE);
-            voteResponse.setVotes(saveVote);
             return ResponseEntity.badRequest().body(voteResponse);
         }
 
         voteResponse.setMessage(VOTE_SUCCESS_SAVE);
-        voteResponse.setVotes(saveVote);
         return ResponseEntity.ok().body(voteResponse);
     }
 
