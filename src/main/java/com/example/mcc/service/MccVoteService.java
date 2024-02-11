@@ -11,9 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static com.example.mcc.response.Message.VOTE_FAIL_SAVE;
 import static com.example.mcc.response.Message.VOTE_SUCCESS_SAVE;
@@ -28,21 +26,18 @@ public class MccVoteService {
     private ParticipantRepository participantRepository;
 
 
-    public List<String> showList() {
-        //저장소에서 저장된 투표들을 가져오기
-        List<Vote> votes = voteRepository.findAll();
+    public Map<String, Vote> getVoteList() {
+        Map<String, Vote> votes = new HashMap<>();
 
-        //투표 제목들을 담기 위한 리스트
-        ArrayList<String> list = new ArrayList<>();
+        Iterator<Vote> findVotes = voteRepository.findAll()
+                .stream()
+                .iterator();
 
-        //꺼낸 투표들에서 제목들만 꺼내서 제목리스트에 담기
-        Iterator<Vote> voteList = votes.iterator();
-        while(voteList.hasNext()){
-            String title = voteList.next().getVoteName();
-            list.add(title);
+        while(!findVotes.hasNext()){
+            Vote nextVote = findVotes.next();
+            votes.put(nextVote.getVoteName(),nextVote);
         }
-        //담은 제목 리스트를 반환
-        return list;
+        return votes;
     }
     //투표 저장하기
     public String saveVote(Vote saveVote) {

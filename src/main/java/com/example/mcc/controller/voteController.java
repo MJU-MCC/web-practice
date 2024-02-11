@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.mcc.response.Message.*;
 
@@ -64,14 +65,10 @@ public class voteController {
 
     //투표 목록 불러오기 API
     @GetMapping("/list")
-    public voteResponse votelist(){
+    public ResponseEntity<Map<String, Vote>> votelist(){
+        Map<String, Vote> voteMap = mccVoteService.getVoteList();
 
-        //투표 제목들을 담은 리스트를 반환 받음
-        List<String> titleList = mccVoteService.showList();
-        voteResponse.setVotes(titleList);
-        voteResponse.setMessage(VOTE_SUCCESS);
-
-        return voteResponse;
+        return ResponseEntity.ok().body(voteMap);
     }
 
     // 투표 글 저장한 평가목록 , 팀 데이터 불러오기
