@@ -26,16 +26,20 @@ public class MccVoteService {
     private ParticipantRepository participantRepository;
 
 
-    public Map<String, Vote> getVoteList() {
-        Map<String, Vote> votes = new HashMap<>();
+    public Map<Long, Vote> getVoteList() {
+        Map<Long, Vote> votes = new HashMap<>();
 
         Iterator<Vote> findVotes = voteRepository.findAll()
-                .stream()
-                .iterator();
+                                    .stream()
+                                    .iterator();
 
         while(!findVotes.hasNext()){
             Vote nextVote = findVotes.next();
-            votes.put(nextVote.getVoteName(),nextVote);
+            Long number = nextVote.getId();
+
+            votes.put(number,nextVote);
+
+            log.info("꺼낸 vote의 넘버 = {} , {}",number , nextVote.getVoteName());
         }
         return votes;
     }

@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Map;
 
 import static com.example.mcc.response.Message.*;
@@ -65,26 +64,25 @@ public class voteController {
 
     //투표 목록 불러오기 API
     @GetMapping("/list")
-    public ResponseEntity<Map<String, Vote>> votelist(){
-        Map<String, Vote> voteMap = mccVoteService.getVoteList();
+    public ResponseEntity<Map<Long, Vote>> votelist(){
+        Map<Long, Vote> voteMap = mccVoteService.getVoteList();
 
         return ResponseEntity.ok().body(voteMap);
     }
 
-    // 투표 글 저장한 평가목록 , 팀 데이터 불러오기
-    @GetMapping("/vote/form/{number}")
-    public ResponseEntity<VoteForm> voteform(@PathVariable Long number
-            , HttpServletRequest request){
+    // 투표를 하기 위해 눌렀을때 투표 양식 데이터 가져오기
+    @GetMapping("/vote/form")
+    public ResponseEntity voteform(@RequestBody RegistVoteDto voteDto){
+        /*
+         * 투표 이름에 따른 해당 하는 투표에 양식 데이터 가져오기
+         */
+        String voteName = voteDto.getVoteName();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String memberNumber = (String) authentication.getPrincipal();
 
         //만약 투표를 한 회원이라면 안된다고 알려주기
         if(mccVoteService.isReVote(memberNumber,number))
             return ResponseEntity.badRequest().body(null);
 
-        //매개변수로 받은 투표 해당 번호를 서비스 계층으로 전달하기
-        return ResponseEntity.ok(mccVoteService.searchVote(number));
     }
     //투표 점수 저장하기
     @PostMapping("/vote/save")
