@@ -22,11 +22,6 @@ public class RegistVoteDto {
     )
     private String voteName;
 
-//    @ApiModelProperty(
-//            name = "평가 항목들",
-//            dataType = "List",
-//            example = "[\"디자인\",\"편의성\",\"창의성\",\"사업성\"]"
-//    )
     @Schema(name = "평가 항목들")
     private List<String> evaluationName;
 

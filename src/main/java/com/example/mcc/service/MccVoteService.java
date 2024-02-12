@@ -1,16 +1,14 @@
 package com.example.mcc.service;
 
+import com.example.mcc.entity.Candidate;
+import com.example.mcc.entity.Evaluation;
+import com.example.mcc.entity.Team;
 import com.example.mcc.entity.Vote;
-import com.example.mcc.entity.Member;
-import com.example.mcc.entity.participant;
-import com.example.mcc.repository.MemberRepository;
-import com.example.mcc.repository.ParticipantRepository;
-import com.example.mcc.repository.VoteRepository;
+import com.example.mcc.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static com.example.mcc.response.Message.VOTE_FAIL_SAVE;
@@ -22,6 +20,9 @@ import static com.example.mcc.response.Message.VOTE_SUCCESS_SAVE;
 public class MccVoteService {
 
     private VoteRepository voteRepository;
+    private EvaluationRepository evaluationRepository;
+    private CandidateRepository candidateRepository;
+    private TeamRepository teamRepository;
 
     //투표 리스트 불러오기
     public Map<Long, Vote> getVoteList() {
@@ -45,19 +46,35 @@ public class MccVoteService {
     }
 
     //투표 저장하기
-    public String saveVote(Vote saveVote) {
-        if(saveVote.getVoteName().isEmpty()){
-            return VOTE_FAIL_SAVE;
-        }
-        if(saveVote.getTeamName().isEmpty()){
-            return VOTE_FAIL_SAVE;
-        }
-        if(saveVote.getEvaluation().isEmpty()){
+    public String saveVote(String voteName, List<String> evaluationList, List<String> teamNameList) {
+        if(voteName.isEmpty() || evaluationList.isEmpty() || teamNameList.isEmpty()){
             return VOTE_FAIL_SAVE;
         }
 
-        voteRepository.save(saveVote);
+        Vote savedVote = new Vote();
+        savedVote.setVoteName(voteName);
 
+        for(String evName : evaluationList){
+
+            Evaluation evaluation = new Evaluation();
+            evaluation.setEvaluationName(evName);
+            evaluation.setVote(savedVote);
+
+            for(String teamName : teamNameList){
+
+                Team team = new Team();
+                team.setTeamName(teamName);
+
+                Candidate candidate = new Candidate();
+                candidate.setTeam(team);
+                candidate.setEvaluation(evaluation);
+
+                teamRepository.save(team);
+                candidateRepository.save(candidate);
+            }
+            evaluationRepository.save(evaluation);
+        }
+        voteRepository.save(savedVote);
         return VOTE_SUCCESS_SAVE;
     }
 

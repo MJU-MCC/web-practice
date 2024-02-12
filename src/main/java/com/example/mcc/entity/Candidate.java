@@ -16,11 +16,11 @@ public class Candidate {
 
     private Long candidateScore;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluation_id")
     private Evaluation evaluation;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")
     private Team team;
 }

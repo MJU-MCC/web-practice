@@ -39,6 +39,7 @@ public class voteController {
     @Parameters({
             @Parameter(name = "registVote" , description = "List Of Vote")
     })
+
     @PostMapping("/vote/regist")
     public ResponseEntity<voteResponse> voteregist(@RequestBody RegistVoteDto registVote){
         log.info("투표 글 작성 controller 시작");
@@ -50,6 +51,7 @@ public class voteController {
         List<String> evaluationList = registVote.getEvaluationName();
         List<String> teamNameList = registVote.getTeamName();
 
+        String message = mccVoteService.saveVote(voteName, evaluationList, teamNameList);
 
 
         if(message.equals(VOTE_FAIL_SAVE)){

@@ -19,7 +19,7 @@ public class Evaluation {
 
     private String evaluationName;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vote_id")
     private Vote vote;
 
