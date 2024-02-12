@@ -22,8 +22,6 @@ import static com.example.mcc.response.Message.VOTE_SUCCESS_SAVE;
 public class MccVoteService {
 
     private VoteRepository voteRepository;
-    private MemberRepository memberRepository;
-    private ParticipantRepository participantRepository;
 
     //투표 리스트 불러오기
     public Map<Long, Vote> getVoteList() {

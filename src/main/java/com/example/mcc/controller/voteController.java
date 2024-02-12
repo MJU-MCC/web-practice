@@ -50,18 +50,7 @@ public class voteController {
         List<String> evaluationList = registVote.getEvaluationName();
         List<String> teamNameList = registVote.getTeamName();
 
-        String message = VOTE_FAIL_SAVE;
-        for(String ev : evaluationList){
-            for(String tn : teamNameList){
-            Vote saveVote = Vote.builder()
-                    .voteName(voteName)
-                    .evaluation(ev)
-                    .teamName(tn)
-                    .build();
-                log.info("Builder로 만들어진 Vote = {}",saveVote);
-                message = mccVoteService.saveVote(saveVote);
-            }
-        }
+
 
         if(message.equals(VOTE_FAIL_SAVE)){
             //투표저장을 위한 투표 이름 , 평가항목 , 팀이름이 하나라도 안적혀 있다면 실패.
