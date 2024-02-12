@@ -55,24 +55,28 @@ public class MccVoteService {
         savedVote.setVoteName(voteName);
 
         for(String evName : evaluationList){
-
             Evaluation evaluation = new Evaluation();
             evaluation.setEvaluationName(evName);
             evaluation.setVote(savedVote);
 
-            for(String teamName : teamNameList){
+            evaluationRepository.save(evaluation);
+        }
 
-                Team team = new Team();
-                team.setTeamName(teamName);
+        for(String teamName : teamNameList){
+            Team team = new Team();
+            team.setTeamName(teamName);
 
+            teamRepository.save(team);
+        }
+        List<Evaluation> savedEvaluationList = evaluationRepository.findAll();
+        List<Team> savedTeamList = teamRepository.findAll();
+        for(Evaluation ev : savedEvaluationList){
+            for(Team t : savedTeamList){
                 Candidate candidate = new Candidate();
-                candidate.setTeam(team);
-                candidate.setEvaluation(evaluation);
-
-                teamRepository.save(team);
+                candidate.setEvaluation(ev);
+                candidate.setTeam(t);
                 candidateRepository.save(candidate);
             }
-            evaluationRepository.save(evaluation);
         }
         voteRepository.save(savedVote);
         return VOTE_SUCCESS_SAVE;
