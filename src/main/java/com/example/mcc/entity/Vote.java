@@ -24,17 +24,11 @@ public class Vote {
     //투표 제목
     private String voteName;
 
-    //평가 항목
-    private String evaluation;
-
-    //평가 받을 팀 이름
-    private String teamName;
-
-    //점수
-    private Integer score;
-
 
     @OneToMany(mappedBy = "vote")
     private List<participant> participantList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "vote")
+    private List<Evaluation> evaluationsList = new ArrayList<>();
 
 }

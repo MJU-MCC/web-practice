@@ -17,7 +17,7 @@ public class participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberVoteId;
+    private Long participantId;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
