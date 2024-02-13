@@ -30,4 +30,7 @@ public class Vote {
     @OneToMany(mappedBy = "vote")
     private List<Evaluation> evaluationsList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "vote")
+    private List<Team> teamList = new ArrayList<>();
+
 }

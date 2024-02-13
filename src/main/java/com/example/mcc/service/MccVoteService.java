@@ -47,6 +47,7 @@ public class MccVoteService {
 
     //투표 저장하기
     public String saveVote(String voteName, List<String> evaluationList, List<String> teamNameList) {
+        //투표 양식에서 한 종류라도 작성을 안해싸면 fail
         if(voteName.isEmpty() || evaluationList.isEmpty() || teamNameList.isEmpty()){
             return VOTE_FAIL_SAVE;
         }
@@ -65,11 +66,17 @@ public class MccVoteService {
         for(String teamName : teamNameList){
             Team team = new Team();
             team.setTeamName(teamName);
+            team.setVote(savedVote);
 
             teamRepository.save(team);
         }
-        List<Evaluation> savedEvaluationList = evaluationRepository.findAll();
-        List<Team> savedTeamList = teamRepository.findAll();
+
+        Vote findVote = voteRepository.findVoteByVoteName(voteName);
+        Long voteId = findVote.getVoteId();
+
+        List<Evaluation> savedEvaluationList = evaluationRepository.findAllByVoteVoteId(voteId);
+        List<Team> savedTeamList = teamRepository.findAllByVoteVoteId(voteId);
+
         for(Evaluation ev : savedEvaluationList){
             for(Team t : savedTeamList){
                 Candidate candidate = new Candidate();

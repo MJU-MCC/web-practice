@@ -22,4 +22,8 @@ public class Team {
 
     @OneToMany(mappedBy = "team")
     private List<Candidate> candidateList = new ArrayList<>();
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "vote_id")
+    private Vote vote;
 }
