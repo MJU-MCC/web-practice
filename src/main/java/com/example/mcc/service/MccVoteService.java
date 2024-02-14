@@ -34,7 +34,7 @@ public class MccVoteService {
         for (Iterator<Vote> it = voteRepository.findAll()
                 .stream()
                 .iterator();
-             it.hasNext(); ) {
+                it.hasNext(); ) {
             Vote vote = it.next();
             Long number = vote.getVoteId();
 

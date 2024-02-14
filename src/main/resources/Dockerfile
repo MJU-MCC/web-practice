@@ -1,8 +1,19 @@
-#MYSQL
+##MYSQL
+#FROM mysql:8.0
+#ENV MYSQL_ROOT_PASSWORD=mcc123
+
 FROM mysql:8.0
+
 ENV MYSQL_ROOT_PASSWORD=mcc123
 ENV MYSQL_DATABASE=mcc
 ENV MYSQL_USER=mcc
 ENV MYSQL_PASSWORD=mcc123
-COPY ./init.sql /docker-entrypoint-initdb.d/
+
+# MySQL 설정을 utf8mb4로 변경
+ENV LANG=C.UTF-8
+ENV TZ=Asia/Seoul
+
+# 컨테이너 내부 MySQL 설정
+COPY ./ /etc/mysql/conf.d/
+
 EXPOSE 3306
